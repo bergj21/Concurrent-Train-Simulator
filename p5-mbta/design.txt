@@ -1,0 +1,14 @@
+To give a brief summary, I utilize synchronization blocks in my Passenger and 
+Train threads. I follow a similar format to the producer / consumer concurrency 
+pattern shown in the lecture slides. More specifically, I synchronize on the 
+stations themselves. For example, I synchronize on the station that a passenger 
+is waiting to board at. The synchronize block continuously waits (gives up the 
+lock) until the passenger's train arrives at the station, at which point
+the passenger boards the train. After the passenger boards the train, it 
+notifies all. I follow this format for the deboard events as  well. The 
+TrainThread acts slightly differently in that there is a double synchronized 
+block. I first synchronize on the trains current station and inside
+this block I synchronize on the trains next station. The train waits (gives up 
+the lock) while the next station is occupied. When the next station becomes
+available, it moves into that station, notifying all that it has
+left its current station and notifying all that is arrived at a new station. 
